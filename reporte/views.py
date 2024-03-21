@@ -14,6 +14,8 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 
+from django.db import connection
+
 # Create your views here.
 def lista_ordenes(request):
     lista = Ordenes.objects.all()
@@ -46,3 +48,11 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             'access': str(refresh.access_token),
             'refresh': str(refresh),
         })
+
+def consulta_json(request):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT CANAL, COUNT(CANAL) AS count_canal, NUMERO_ORDEN, COUNT(NUMERO_ORDEN) AS count_numero_orden FROM OC_ORDENES_CONS GROUP BY CANAL, NUMERO_ORDEN;")
+        column_names = [desc[0] for desc in cursor.description]
+        rows = cursor.fetchall()
+        data = [dict(zip(column_names, row)) for row in rows]
+    return JsonResponse(data, safe=False)
