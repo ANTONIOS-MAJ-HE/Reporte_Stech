@@ -1,0 +1,5 @@
+<ul>
+    {% for orden in resultados %}
+        <li>{{ orden.id }} - id: {{ orden.DIA }} - Total Soles Día: {{ orden.TOTAL_SOLES_DIA }} - Total Unidades Día: {{ orden.TOTAL_UNIDADES_DIA }} - Total Soles Mes: {{ orden.TOTAL_SOLES_MES }} - Total Unidades Mes: {{ orden.TOTAL_UNIDADES_MES }}</li>
+    {% endfor %}
+</ul>
