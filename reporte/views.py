@@ -49,10 +49,9 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             'refresh': str(refresh),
         })
 
-def consulta_json(request):
+def consulta_json(request): 
     with connection.cursor() as cursor:
-        cursor.execute("SELECT CANAL, COUNT(CANAL) AS count_canal, NUMERO_ORDEN, COUNT(NUMERO_ORDEN) AS count_numero_orden FROM OC_ORDENES_CONS GROUP BY CANAL, NUMERO_ORDEN;")
-        column_names = [desc[0] for desc in cursor.description]
+        cursor.execute("SELECT canal, numero_orden FROM oc_ordenes_cons;")
         rows = cursor.fetchall()
-        data = [dict(zip(column_names, row)) for row in rows]
+        data = [{'CANAL': row[0], 'NUMERO_ORDEN': row[1]} for row in rows]
     return JsonResponse(data, safe=False)
