@@ -23,7 +23,7 @@ def lista_ordenes(request):
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
-@csrf_exempt
+#@csrf_exempt
 def ordenes(request):
     if request.method == 'GET':
         ordenes = Ordenes.objects.all()
