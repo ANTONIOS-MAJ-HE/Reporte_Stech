@@ -13,7 +13,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
-
 from django.db import connection
 
 # Create your views here.
@@ -115,6 +114,10 @@ def ventasDiarias(request):
         return JsonResponse(serializer.data, safe=False)
     elif request.method == 'POST':
         data = json.loads(request.body)
+        
+        with connection.cursor() as cursor:
+            cursor.execute("TRUNCATE TABLE oc_ventas_mes_cons;")
+
         serializer = VentaDiaSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
@@ -133,7 +136,11 @@ def ventasProductos(request):
         return JsonResponse(serializer.data, safe=False)
     elif request.method == 'POST':
         data = json.loads(request.body)
+
+        with connection.cursor() as cursor:
+            cursor.execute("TRUNCATE TABLE oc_ventas_productos_cons;")
         serializer = VentaProductoSerializer(data=data)
+
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=201)
@@ -151,6 +158,11 @@ def ventasCanales(request):
         return JsonResponse(serializer.data, safe=False)
     elif request.method == 'POST':
         data = json.loads(request.body)
+
+        # Truncar la tabla antes de insertar nuevos datos
+        with connection.cursor() as cursor:
+            cursor.execute("TRUNCATE TABLE oc_ventas_canal_cons;")
+
         serializer = VentaCanalSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
