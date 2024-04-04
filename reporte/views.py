@@ -23,7 +23,7 @@ def lista_ordenes(request):
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
-#@csrf_exempt
+@csrf_exempt
 def ordenes(request):
     if request.method == 'GET':
         ordenes = Ordenes.objects.all()
@@ -49,9 +49,90 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             'refresh': str(refresh),
         })
 
-def consulta_json(request): 
+# @api_view(['GET', 'POST'])
+# @permission_classes([IsAuthenticated])
+# @csrf_exempt
+# def consulta_json(request): 
+#     with connection.cursor() as cursor:
+#         cursor.execute("SELECT canal, numero_orden, numero_factura, dni_cliente, nombre_cliente, direccion_cliente, region_venta, nombre_producto, modelo_producto, marca_producto, categoria_producto, codigo_producto_canal, part_number, cantidad, precio_s_igv, precio_c_igv, total_s_igv, total_c_igv, fecha_orden, fecha_proceso, fecha_despacho, st_despacho, estado_orden, observacion_orden FROM oc_ordenes_cons WHERE canal = 'CONECTA';")
+#         rows = cursor.fetchall()
+#         data = [{'canal': row[0],
+#                  'numero_orden': row[1],
+#                  'numero_factura': row[2],
+#                  'dni_cliente': row[3],
+#                  'nombre_cliente': row[4],
+#                  'direccion_cliente': row[5],
+#                  'region_venta': row[6],
+#                  'nombre_producto': row[7],
+#                  'modelo_producto': row[8],
+#                  'marca_producto': row[9],
+#                  'categoria_producto': row[10],
+#                  'codigo_producto_canal': row[11],
+#                  'part_number': row[12],
+#                  'cantidad': row[13],
+#                  'precio_s_igv': row[14],
+#                  'precio_c_igv': row[15],
+#                  'total_s_igv': row[16],
+#                  'total_c_igv': row[17],
+#                  'fecha_orden': row[18],
+#                  'fecha_proceso': row[19],
+#                  'fecha_despacho': row[20],
+#                  'st_despacho': row[21],
+#                  'estado_orden': row[22],
+#                  'observacion_orden': row[23]} for row in rows]
+#     return JsonResponse(data, safe=False)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+@csrf_exempt
+def consulta_json(request, canal=None, numero_orden=None, nombre_cliente=None, fecha_desde=None, fecha_hasta=None): 
+    # Construir la consulta base
+    query = "SELECT canal, numero_orden, numero_factura, dni_cliente, nombre_cliente, direccion_cliente, region_venta, nombre_producto, modelo_producto, marca_producto, categoria_producto, codigo_producto_canal, part_number, cantidad, precio_s_igv, precio_c_igv, total_s_igv, total_c_igv, fecha_orden, fecha_proceso, fecha_despacho, st_despacho, estado_orden, observacion_orden FROM oc_ordenes_cons WHERE 1=1"
+    
+    # Aplicar filtros según los parámetros de la URL
+    if canal:
+        query += " AND canal LIKE '%{}%'".format(canal)
+    if numero_orden:
+        query += " AND numero_orden LIKE '%{}%'".format(numero_orden)
+    if nombre_cliente:
+        query += " AND nombre_cliente LIKE '%{}%'".format(nombre_cliente)
+    # Puedes agregar más condiciones aquí según tus necesidades
+        
+    # Filtro de rango de fecha
+    if fecha_desde:
+        query += " AND fecha_proceso >= '{}'".format(fecha_desde)
+    if fecha_hasta:
+        query += " AND fecha_proceso <= '{}'".format(fecha_hasta)    
+        
+    # Ordenar por fecha de manera descendente
+    query += " ORDER BY fecha_orden DESC"
+    
     with connection.cursor() as cursor:
-        cursor.execute("SELECT canal, numero_orden FROM oc_ordenes_cons;")
+        cursor.execute(query)
         rows = cursor.fetchall()
-        data = [{'CANAL': row[0], 'NUMERO_ORDEN': row[1]} for row in rows]
+        data = [{'canal': row[0],
+                 'numero_orden': row[1],
+                 'numero_factura': row[2],
+                 'dni_cliente': row[3],
+                 'nombre_cliente': row[4],
+                 'direccion_cliente': row[5],
+                 'region_venta': row[6],
+                 'nombre_producto': row[7],
+                 'modelo_producto': row[8],
+                 'marca_producto': row[9],
+                 'categoria_producto': row[10],
+                 'codigo_producto_canal': row[11],
+                 'part_number': row[12],
+                 'cantidad': row[13],
+                 'precio_s_igv': row[14],
+                 'precio_c_igv': row[15],
+                 'total_s_igv': row[16],
+                 'total_c_igv': row[17],
+                 'fecha_orden': row[18],
+                 'fecha_proceso': row[19],
+                 'fecha_despacho': row[20],
+                 'st_despacho': row[21],
+                 'estado_orden': row[22],
+                 'observacion_orden': row[23]} for row in rows]
     return JsonResponse(data, safe=False)

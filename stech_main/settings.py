@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 import dj_database_url
 from datetime import timedelta
+import pyodbc
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'stech_main.urls'
@@ -76,21 +79,36 @@ WSGI_APPLICATION = 'stech_main.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'sql_server.pyodbc',
+#         'NAME': 'DB_ST',
+#         'USER': 'STEC',
+#         'PASSWORD': 'sasa',
+#         'HOST': 'PC005',  # Cambia esto a la dirección de tu servidor SQL Server
+#         'PORT': '',           # Deja esto vacío para usar el puerto predeterminado
+#         'OPTIONS': {
+#             'driver': 'ODBC Driver 17 for SQL Server',  # El nombre del controlador ODBC instalado
+#         },
+#     }
+# }
+
+# DATABASES["default"] = dj_database_url.parse("postgres://stech_user:qWpJGK45J65gDOC7xiTbCOBmQeCG6JRq@dpg-cnthkf20si5c73dob49g-a.oregon-postgres.render.com/stech")
+
 DATABASES = {
     'default': {
         'ENGINE': 'sql_server.pyodbc',
         'NAME': 'DB_ST',
-        'USER': 'STEC',
-        'PASSWORD': 'sasa',
-        'HOST': 'PC005',  # Cambia esto a la dirección de tu servidor SQL Server
-        'PORT': '',           # Deja esto vacío para usar el puerto predeterminado
+        # 'USER': 'tu_usuario',
+        # 'PASSWORD': 'tu_contraseña',
+        'Trusted_Connection': 'yes',  # Utiliza autenticación de Windows
+        'HOST': '192.168.18.78',
+        'PORT': '50260',  # Puedes dejarlo vacío si usas el puerto predeterminado
         'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',  # El nombre del controlador ODBC instalado
+            'driver': 'ODBC Driver 17 for SQL Server',  # Esto puede variar según tu versión de controlador
         },
     }
 }
-
-DATABASES["default"] = dj_database_url.parse("postgres://stech_user:qWpJGK45J65gDOC7xiTbCOBmQeCG6JRq@dpg-cnthkf20si5c73dob49g-a.oregon-postgres.render.com/stech")
 
 
 # Password validation
@@ -145,3 +163,9 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=365),  # Duración del token de acceso (en este caso, 1 año)
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),   # Duración del token de actualización (en este caso, 1 día)
 }
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',  # Origen de tu aplicación React
+    'http://localhost:5000',
+    # Otros orígenes permitidos si los hay...
+]
