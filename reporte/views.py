@@ -1,7 +1,7 @@
 import json
 from django.shortcuts import render
 from .utils import mostrar_tablas
-from .models import Ordenes, VentasDiarias
+from .models import Ordenes, VentasDiarias, VentasProductos, VentasCanales
 from .serializers import OrdenSerializer, VentaDiaSerializer, VentaProductoSerializer, VentaCanalSerializer
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -128,7 +128,7 @@ def ventasDiarias(request):
 @csrf_exempt
 def ventasProductos(request):
     if request.method == 'GET':
-        ventasProductos = ventasProductos.objects.all()
+        ventasProductos = VentasProductos.objects.all()
         serializer = VentaProductoSerializer(ventasProductos, many=True)
         return JsonResponse(serializer.data, safe=False)
     elif request.method == 'POST':
@@ -146,7 +146,7 @@ def ventasProductos(request):
 @csrf_exempt
 def ventasCanales(request):
     if request.method == 'GET':
-        ventasCanales = ventasCanales.objects.all()
+        ventasCanales = VentasCanales.objects.all()
         serializer = VentaCanalSerializer(ventasCanales, many=True)
         return JsonResponse(serializer.data, safe=False)
     elif request.method == 'POST':
