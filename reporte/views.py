@@ -129,7 +129,7 @@ def ventasDiarias(request):
 def ventasProductos(request):
     if request.method == 'GET':
         ventasProductos = ventasProductos.objects.all()
-        serializer = VentaProductoSerializer(ventasDiarias, many=True)
+        serializer = VentaProductoSerializer(ventasProductos, many=True)
         return JsonResponse(serializer.data, safe=False)
     elif request.method == 'POST':
         data = json.loads(request.body)
@@ -147,7 +147,7 @@ def ventasProductos(request):
 def ventasCanales(request):
     if request.method == 'GET':
         ventasCanales = ventasCanales.objects.all()
-        serializer = VentaCanalSerializer(ventasDiarias, many=True)
+        serializer = VentaCanalSerializer(ventasCanales, many=True)
         return JsonResponse(serializer.data, safe=False)
     elif request.method == 'POST':
         data = json.loads(request.body)
