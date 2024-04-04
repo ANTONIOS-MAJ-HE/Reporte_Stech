@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from .views import lista_ordenes, ordenes, CustomTokenObtainPairView, consulta_json, ventasDiarias
+from .views import lista_ordenes, ordenes, CustomTokenObtainPairView, consulta_json, ventasDiarias, ventasProductos, ventasCanales
 
 urlpatterns = [
 
@@ -16,6 +16,12 @@ urlpatterns = [
 
     #Insertar y Ver todas la Ventas diarias y del mes 
     path('ventas-diarias/', ventasDiarias, name="ventasDiarias"),  
+
+    #Insertar y Ver todas la Ventas diarias y del mes 
+    path('ventas-productos/', ventasProductos, name="ventasProductos"), 
+
+    #Insertar y Ver todas la Ventas diarias y del mes 
+    path('ventas-canales/', ventasCanales, name="ventasCanales"), 
 
     # path( 'consulta_json/', consulta_json, name = 'consulta_json' ),
 

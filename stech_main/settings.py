@@ -167,6 +167,6 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',  # Origen de tu aplicación React
     'http://localhost:5000',
-    'https://reporte-f-stech.onrender.com/',
+    'https://reporte-f-stech.onrender.com',
     # Otros orígenes permitidos si los hay...
 ]

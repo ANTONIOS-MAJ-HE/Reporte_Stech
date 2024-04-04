@@ -51,4 +51,35 @@ class VentasDiarias(models.Model):
     def __str__(self):
         # Representación de cadena del objeto
         return self.dia
+    
+class VentasProductos(models.Model):
+    marca_producto = models.CharField(primary_key=True)
+    mini_codigo = models.CharField(max_length=255, null=True)
+    part_number = models.CharField(max_length=255, null=True)
+    stock_restante = models.IntegerField(null=True)
+    cantidad_productos_vendidos = models.IntegerField(null=True)
+    subtotal_s_igv = models.FloatField(null=True)
+    total_c_igv =  models.FloatField(null=True)
+    porcentaje =  models.FloatField(null=True)
 
+    class Meta:
+        db_table = 'oc_ventas_productos_cons'
+
+    def __str__(self):
+        # Representación de cadena del objeto
+        return self.marca_producto
+
+class VentasCanales(models.Model):
+    canal = models.CharField(primary_key=True)
+    cantidad_ordenes = models.IntegerField(null=True)
+    cantidad_productos = models.IntegerField(null=True)
+    precio_s_igv = models.FloatField(null=True)
+    precio_c_igv =  models.FloatField(null=True)
+    porcentaje =  models.FloatField(null=True)
+
+    class Meta:
+        db_table = 'oc_ventas_canal_cons'
+
+    def __str__(self):
+        # Representación de cadena del objeto
+        return self.canal

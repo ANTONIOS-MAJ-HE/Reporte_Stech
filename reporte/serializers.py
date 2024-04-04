@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Ordenes, VentasDiarias
+from .models import Ordenes, VentasDiarias, VentasProductos, VentasCanales
 
 class OrdenSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,3 +37,26 @@ class VentaDiaSerializer(serializers.ModelSerializer):
                   , 'total_unidades_dia'
                   , 'total_soles_mes'
                   , 'total_unidades_mes']
+        
+
+class VentaProductoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VentasProductos
+        fields = ['marca_producto'
+                  , 'mini_codigo'
+                  , 'part_number'
+                  , 'stock_restante'
+                  , 'cantidad_productos_vendidos'
+                  , 'subtotal_s_igv'
+                  , 'total_c_igv'
+                  , 'porcentaje']
+
+class VentaCanalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VentasCanales
+        fields = ['canal'
+                  , 'cantidad_ordenes'
+                  , 'cantidad_productos'
+                  , 'precio_s_igv'
+                  , 'precio_c_igv'
+                  , 'porcentaje']

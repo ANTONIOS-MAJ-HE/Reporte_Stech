@@ -2,7 +2,7 @@ import json
 from django.shortcuts import render
 from .utils import mostrar_tablas
 from .models import Ordenes, VentasDiarias
-from .serializers import OrdenSerializer, VentaDiaSerializer
+from .serializers import OrdenSerializer, VentaDiaSerializer, VentaProductoSerializer, VentaCanalSerializer
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
@@ -116,6 +116,42 @@ def ventasDiarias(request):
     elif request.method == 'POST':
         data = json.loads(request.body)
         serializer = VentaDiaSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
+    
+
+#ventas de los productos del dia
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+@csrf_exempt
+def ventasProductos(request):
+    if request.method == 'GET':
+        ventasProductos = ventasProductos.objects.all()
+        serializer = VentaProductoSerializer(ventasDiarias, many=True)
+        return JsonResponse(serializer.data, safe=False)
+    elif request.method == 'POST':
+        data = json.loads(request.body)
+        serializer = VentaProductoSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
+
+
+#ventas de canales por dia
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+@csrf_exempt
+def ventasCanales(request):
+    if request.method == 'GET':
+        ventasCanales = ventasCanales.objects.all()
+        serializer = VentaCanalSerializer(ventasDiarias, many=True)
+        return JsonResponse(serializer.data, safe=False)
+    elif request.method == 'POST':
+        data = json.loads(request.body)
+        serializer = VentaCanalSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=201)
