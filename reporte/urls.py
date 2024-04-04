@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from .views import lista_ordenes, ordenes, CustomTokenObtainPairView, consulta_json
+from .views import lista_ordenes, ordenes, CustomTokenObtainPairView, consulta_json, ventasDiarias
 
 urlpatterns = [
 
@@ -10,7 +10,12 @@ urlpatterns = [
     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
 
     path('', lista_ordenes, name='lista_ordenes'),
+
+    #Insertar y Ver todas las Ordenes
     path('ordenes/', ordenes, name='ordenes'), #insertar datos o ver
+
+    #Insertar y Ver todas la Ventas diarias y del mes 
+    path('ventas-diarias/', ventasDiarias, name="ventasDiarias"),  
 
     # path( 'consulta_json/', consulta_json, name = 'consulta_json' ),
 

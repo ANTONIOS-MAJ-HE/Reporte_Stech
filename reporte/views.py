@@ -1,8 +1,8 @@
 import json
 from django.shortcuts import render
 from .utils import mostrar_tablas
-from .models import Ordenes
-from .serializers import OrdenSerializer
+from .models import Ordenes, VentasDiarias
+from .serializers import OrdenSerializer, VentaDiaSerializer
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
@@ -48,40 +48,6 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             'access': str(refresh.access_token),
             'refresh': str(refresh),
         })
-
-# @api_view(['GET', 'POST'])
-# @permission_classes([IsAuthenticated])
-# @csrf_exempt
-# def consulta_json(request): 
-#     with connection.cursor() as cursor:
-#         cursor.execute("SELECT canal, numero_orden, numero_factura, dni_cliente, nombre_cliente, direccion_cliente, region_venta, nombre_producto, modelo_producto, marca_producto, categoria_producto, codigo_producto_canal, part_number, cantidad, precio_s_igv, precio_c_igv, total_s_igv, total_c_igv, fecha_orden, fecha_proceso, fecha_despacho, st_despacho, estado_orden, observacion_orden FROM oc_ordenes_cons WHERE canal = 'CONECTA';")
-#         rows = cursor.fetchall()
-#         data = [{'canal': row[0],
-#                  'numero_orden': row[1],
-#                  'numero_factura': row[2],
-#                  'dni_cliente': row[3],
-#                  'nombre_cliente': row[4],
-#                  'direccion_cliente': row[5],
-#                  'region_venta': row[6],
-#                  'nombre_producto': row[7],
-#                  'modelo_producto': row[8],
-#                  'marca_producto': row[9],
-#                  'categoria_producto': row[10],
-#                  'codigo_producto_canal': row[11],
-#                  'part_number': row[12],
-#                  'cantidad': row[13],
-#                  'precio_s_igv': row[14],
-#                  'precio_c_igv': row[15],
-#                  'total_s_igv': row[16],
-#                  'total_c_igv': row[17],
-#                  'fecha_orden': row[18],
-#                  'fecha_proceso': row[19],
-#                  'fecha_despacho': row[20],
-#                  'st_despacho': row[21],
-#                  'estado_orden': row[22],
-#                  'observacion_orden': row[23]} for row in rows]
-#     return JsonResponse(data, safe=False)
-
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -136,3 +102,21 @@ def consulta_json(request, canal=None, numero_orden=None, nombre_cliente=None, f
                  'estado_orden': row[22],
                  'observacion_orden': row[23]} for row in rows]
     return JsonResponse(data, safe=False)
+
+#ventas diarias y de todo el mes
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+@csrf_exempt
+def ventasDiarias(request):
+    if request.method == 'GET':
+        ventasDiarias = VentasDiarias.objects.all()
+        serializer = VentaDiaSerializer(ventasDiarias, many=True)
+        return JsonResponse(serializer.data, safe=False)
+    elif request.method == 'POST':
+        data = json.loads(request.body)
+        serializer = VentaDiaSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)

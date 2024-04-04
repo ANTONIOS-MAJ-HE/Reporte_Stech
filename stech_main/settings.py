@@ -79,36 +79,36 @@ WSGI_APPLICATION = 'stech_main.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'sql_server.pyodbc',
-#         'NAME': 'DB_ST',
-#         'USER': 'STEC',
-#         'PASSWORD': 'sasa',
-#         'HOST': 'PC005',  # Cambia esto a la dirección de tu servidor SQL Server
-#         'PORT': '',           # Deja esto vacío para usar el puerto predeterminado
-#         'OPTIONS': {
-#             'driver': 'ODBC Driver 17 for SQL Server',  # El nombre del controlador ODBC instalado
-#         },
-#     }
-# }
-
-# DATABASES["default"] = dj_database_url.parse("postgres://stech_user:qWpJGK45J65gDOC7xiTbCOBmQeCG6JRq@dpg-cnthkf20si5c73dob49g-a.oregon-postgres.render.com/stech")
-
 DATABASES = {
     'default': {
         'ENGINE': 'sql_server.pyodbc',
         'NAME': 'DB_ST',
-        # 'USER': 'tu_usuario',
-        # 'PASSWORD': 'tu_contraseña',
-        'Trusted_Connection': 'yes',  # Utiliza autenticación de Windows
-        'HOST': '192.168.18.78',
-        'PORT': '50260',  # Puedes dejarlo vacío si usas el puerto predeterminado
+        'USER': 'STEC',
+        'PASSWORD': 'sasa',
+        'HOST': 'PC005',  # Cambia esto a la dirección de tu servidor SQL Server
+        'PORT': '',           # Deja esto vacío para usar el puerto predeterminado
         'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',  # Esto puede variar según tu versión de controlador
+            'driver': 'ODBC Driver 17 for SQL Server',  # El nombre del controlador ODBC instalado
         },
     }
 }
+
+DATABASES["default"] = dj_database_url.parse("postgres://stech_user:qWpJGK45J65gDOC7xiTbCOBmQeCG6JRq@dpg-cnthkf20si5c73dob49g-a.oregon-postgres.render.com/stech")
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'sql_server.pyodbc',
+#         'NAME': 'DB_ST',
+#         # 'USER': 'tu_usuario',
+#         # 'PASSWORD': 'tu_contraseña',
+#         'Trusted_Connection': 'yes',  # Utiliza autenticación de Windows
+#         'HOST': '192.168.18.78',
+#         'PORT': '50260',  # Puedes dejarlo vacío si usas el puerto predeterminado
+#         'OPTIONS': {
+#             'driver': 'ODBC Driver 17 for SQL Server',  # Esto puede variar según tu versión de controlador
+#         },
+#     }
+# }
 
 
 # Password validation

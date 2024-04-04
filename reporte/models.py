@@ -36,3 +36,19 @@ class Ordenes(models.Model):
     def __str__(self):
         # Representación de cadena del objeto
         return self.numero_orden
+
+#Ventas de todos los dias del mes
+class VentasDiarias(models.Model):
+    dia = models.DateTimeField(primary_key=True)
+    total_soles_dia = models.FloatField(null=True)
+    total_unidades_dia = models.IntegerField(null=True)
+    total_soles_mes =  models.FloatField(null=True)
+    total_unidades_mes = models.IntegerField(null=True)
+
+    class Meta:
+        db_table = 'oc_ventas_mes_cons'
+
+    def __str__(self):
+        # Representación de cadena del objeto
+        return self.dia
+

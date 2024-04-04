@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Ordenes
+from .models import Ordenes, VentasDiarias
 
 class OrdenSerializer(serializers.ModelSerializer):
     class Meta:
@@ -28,3 +28,12 @@ class OrdenSerializer(serializers.ModelSerializer):
                   , 'st_despacho' 
                   , 'estado_orden' 
                   , 'observacion_orden' ]
+
+class VentaDiaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VentasDiarias
+        fields = ['dia'
+                  , 'total_soles_dia'
+                  , 'total_unidades_dia'
+                  , 'total_soles_mes'
+                  , 'total_unidades_mes']
