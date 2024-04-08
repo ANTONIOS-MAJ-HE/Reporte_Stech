@@ -31,6 +31,7 @@ class Ordenes(models.Model):
 
     class Meta:
         # Especifica el nombre de la tabla en la base de datos
+        managed = False
         db_table = 'oc_ordenes_cons'
 
     def __str__(self):
@@ -46,6 +47,7 @@ class VentasDiarias(models.Model):
     total_unidades_mes = models.IntegerField(null=True)
 
     class Meta:
+        managed = False
         db_table = 'oc_ventas_mes_cons'
 
     def __str__(self):
@@ -53,21 +55,23 @@ class VentasDiarias(models.Model):
         return self.dia
     
 class VentasProductos(models.Model):
-    marca_producto = models.CharField(primary_key=True)
-    mini_codigo = models.CharField(max_length=255, null=True)
+    mini_codigo = models.CharField(primary_key=True, max_length=255)
+    marca_producto = models.CharField(max_length=255)
     part_number = models.CharField(max_length=255, null=True)
     stock_restante = models.IntegerField(null=True)
     cantidad_productos_vendidos = models.IntegerField(null=True)
     subtotal_s_igv = models.FloatField(null=True)
     total_c_igv =  models.FloatField(null=True)
     porcentaje =  models.FloatField(null=True)
+    fecha = models.DateTimeField(null=True)
 
     class Meta:
+        managed = False
         db_table = 'oc_ventas_productos_cons'
 
     def __str__(self):
         # Representación de cadena del objeto
-        return self.marca_producto
+        return self.mini_codigo
 
 class VentasCanales(models.Model):
     canal = models.CharField(primary_key=True)
@@ -76,8 +80,10 @@ class VentasCanales(models.Model):
     precio_s_igv = models.FloatField(null=True)
     precio_c_igv =  models.FloatField(null=True)
     porcentaje =  models.FloatField(null=True)
+    fecha = models.DateTimeField(null=True)
 
     class Meta:
+        managed = False
         db_table = 'oc_ventas_canal_cons'
 
     def __str__(self):

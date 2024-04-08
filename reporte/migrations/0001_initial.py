@@ -6,19 +6,3 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     initial = True
-
-    dependencies = [
-    ]
-
-    operations = [
-        migrations.CreateModel(
-            name='Ordenes',
-            fields=[
-                ('CANAL', models.CharField(max_length=4000)),
-                ('NUMERO_ORDEN', models.CharField(max_length=4000, primary_key=True, serialize=False)),
-            ],
-            options={
-                'db_table': 'OC_ORDENES_CONS',
-            },
-        ),
-    ]

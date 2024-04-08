@@ -49,7 +49,8 @@ class VentaProductoSerializer(serializers.ModelSerializer):
                   , 'cantidad_productos_vendidos'
                   , 'subtotal_s_igv'
                   , 'total_c_igv'
-                  , 'porcentaje']
+                  , 'porcentaje'
+                  , 'fecha']
 
 class VentaCanalSerializer(serializers.ModelSerializer):
     class Meta:
@@ -59,4 +60,5 @@ class VentaCanalSerializer(serializers.ModelSerializer):
                   , 'cantidad_productos'
                   , 'precio_s_igv'
                   , 'precio_c_igv'
-                  , 'porcentaje']
+                  , 'porcentaje'
+                  , 'fecha']

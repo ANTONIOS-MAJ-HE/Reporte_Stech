@@ -137,10 +137,13 @@ def ventasProductos(request):
     elif request.method == 'POST':
         data = json.loads(request.body)
 
-        with connection.cursor() as cursor:
-            cursor.execute("TRUNCATE TABLE oc_ventas_productos_cons;")
-        serializer = VentaProductoSerializer(data=data)
+        # Obtener la fecha del JSON
+        fecha_venta = data.get('fecha')
 
+        # Eliminar todas las filas de la tabla que tengan una fecha diferente a la proporcionada en el JSON
+        VentasProductos.objects.exclude(fecha=fecha_venta).delete()
+
+        serializer = VentaProductoSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=201)
@@ -159,9 +162,11 @@ def ventasCanales(request):
     elif request.method == 'POST':
         data = json.loads(request.body)
 
-        # Truncar la tabla antes de insertar nuevos datos
-        with connection.cursor() as cursor:
-            cursor.execute("TRUNCATE TABLE oc_ventas_canal_cons;")
+        # Obtener la fecha del JSON
+        fecha_venta = data.get('fecha')
+
+        # Eliminar todas las filas de la tabla que tengan una fecha diferente a la proporcionada en el JSON
+        VentasCanales.objects.exclude(fecha=fecha_venta).delete()
 
         serializer = VentaCanalSerializer(data=data)
         if serializer.is_valid():
